@@ -5,7 +5,7 @@ interface FrontMatterToHtmlAttributesSettings {}
 const DEFAULT_SETTINGS: FrontMatterToHtmlAttributesSettings = {};
 
 /**
- * Plugin to apply YAML frontmatter key-value pairs as data-* attributes to HTML.
+ * Plugin to add YAML frontmatter key-value pairs as data-* attributes to HTML.
  *
  * Attributes are applied to leaf.view.containerEl
  * - div.workspace-leaf-content in HTML
@@ -27,6 +27,7 @@ export default class FrontMatterToHtmlAttributesPlugin extends Plugin {
 
     async onload() {
         await this.loadSettings();
+
         // Handle opening new files and switching to already open files
         this.registerEvent(
             this.app.workspace.on("file-open", this.handleFileOpen.bind(this))
@@ -52,7 +53,6 @@ export default class FrontMatterToHtmlAttributesPlugin extends Plugin {
     }
 
     onunload() {
-        console.log("Unloading Frontmatter to Attributes plugin");
         // Clean up any attributes added to all open leaves
         this.app.workspace.getLeavesOfType("markdown").forEach((leaf) => {
             const leafContentEl = leaf.view.containerEl;
@@ -103,18 +103,18 @@ export default class FrontMatterToHtmlAttributesPlugin extends Plugin {
     }
 
     /**
-     * Applies frontmatter as data attributes to a given leaf's content element.
+     * Applies frontmatter as data attributes to a leaf's container element.
      * @param {TFile} file The file to get frontmatter from.
-     * @param {WorkspaceLeaf} leaf The leaf whose DOM element we're modifying.
+     * @param {WorkspaceLeaf} leaf The leaf whose container element to modify.
      */
     applyAttributes(file: TFile, leaf: WorkspaceLeaf) {
         if (!file || !leaf) return;
 
-        // The target element for our attributes.
+        // The target element for new attributes
         const leafContentEl = leaf.view.containerEl;
         if (!leafContentEl) return;
 
-        // Always clear any attributes we added previously
+        // Clear attributes added previously
         this.clearAttributes(leafContentEl);
 
         const frontmatter =
@@ -148,7 +148,7 @@ export default class FrontMatterToHtmlAttributesPlugin extends Plugin {
             }
         }
 
-        // Store keys we added
+        // Remember keys added
         if (newKeys.length > 0) {
             this.appliedAttributes.set(leafContentEl, newKeys);
         }
