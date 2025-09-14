@@ -68,9 +68,9 @@ export default class FrontMatterToHtmlAttributesPlugin extends Plugin {
      */
     handleFileOpen(file: TFile) {
         // When a file is opened, it becomes the active leaf's file.
-        const activeLeaf = this.app.workspace.activeLeaf;
-        if (file && activeLeaf) {
-            this.applyAttributes(file, activeLeaf);
+        const activeView = this.app.workspace.getActiveViewOfType(MarkdownView);
+        if (file && activeView?.leaf) {
+            this.applyAttributes(file, activeView.leaf);
         }
     }
 
