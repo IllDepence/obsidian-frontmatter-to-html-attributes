@@ -1,6 +1,6 @@
 {
 	"name": "obsidian-frontmatter-to-attributes",
-	"version": "0.0.1",
+	"version": "0.1.0",
 	"description": "Applies YAML frontmatter items as data-* attributes to the note's container element, allowing for powerful custom CSS styling based on metadata.",
 	"main": "main.js",
 	"scripts": {

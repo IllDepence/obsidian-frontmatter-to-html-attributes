@@ -1,7 +1,7 @@
 {
     "id": "frontmatter-to-html-attributes",
     "name": "Frontmatter to HTML Attributes",
-    "version": "0.0.1",
+    "version": "0.1.0",
     "minAppVersion": "1.19.12",
     "description": "Makes YAML frontmatter available as data-* attributes for CSS styling.",
     "author": "Tarek Saier",
