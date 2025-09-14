@@ -27,12 +27,12 @@ export default class FrontMatterToHtmlAttributesPlugin extends Plugin {
 
     async onload() {
         await this.loadSettings();
-        // This event handles both opening a new file and switching to an already open file.
+        // Handle opening new files and switching to already open files
         this.registerEvent(
             this.app.workspace.on("file-open", this.handleFileOpen.bind(this))
         );
 
-        // This event handles changes to the frontmatter of an already open file.
+        // Handle changes to the frontmatter of an already open file
         this.registerEvent(
             this.app.metadataCache.on(
                 "changed",
@@ -40,7 +40,7 @@ export default class FrontMatterToHtmlAttributesPlugin extends Plugin {
             )
         );
 
-        // On initial load, process all currently open markdown files.
+        // On initial load, process all currently open markdown files
         this.app.workspace.onLayoutReady(() => {
             this.app.workspace.getLeavesOfType("markdown").forEach((leaf) => {
                 if (!(leaf.view instanceof MarkdownView)) return;
@@ -53,7 +53,7 @@ export default class FrontMatterToHtmlAttributesPlugin extends Plugin {
 
     onunload() {
         console.log("Unloading Frontmatter to Attributes plugin");
-        // Clean up any attributes we've set in all open leaves.
+        // Clean up any attributes added to all open leaves
         this.app.workspace.getLeavesOfType("markdown").forEach((leaf) => {
             const leafContentEl = leaf.view.containerEl;
             if (leafContentEl) {
@@ -79,7 +79,7 @@ export default class FrontMatterToHtmlAttributesPlugin extends Plugin {
      * @param {TFile} file The file whose metadata changed.
      */
     handleMetadataChange(file: TFile) {
-        // Find all open leaves with this file and update their attributes.
+        // Find all open leaves with this file and add data attributes
         this.app.workspace.getLeavesOfType("markdown").forEach((leaf) => {
             if (!(leaf.view instanceof MarkdownView)) return;
             if (leaf.view.file && leaf.view.file.path === file.path) {
@@ -89,7 +89,7 @@ export default class FrontMatterToHtmlAttributesPlugin extends Plugin {
     }
 
     /**
-     * Clears previously set data attributes from a specific HTML element.
+     * Clears previously added data attributes from a specific HTML element.
      * @param {HTMLElement} element The element to clear attributes from.
      */
     clearAttributes(element: HTMLElement) {
@@ -114,15 +114,12 @@ export default class FrontMatterToHtmlAttributesPlugin extends Plugin {
         const leafContentEl = leaf.view.containerEl;
         if (!leafContentEl) return;
 
-        // Always clear any attributes we set previously on this specific element.
+        // Always clear any attributes we added previously
         this.clearAttributes(leafContentEl);
 
         const frontmatter =
             this.app.metadataCache.getFileCache(file)?.frontmatter;
-
-        if (!frontmatter) {
-            return; // Nothing to do if there's no frontmatter.
-        }
+        if (!frontmatter) return;
 
         const newKeys = [];
         for (const key in frontmatter) {
@@ -130,16 +127,16 @@ export default class FrontMatterToHtmlAttributesPlugin extends Plugin {
                 const value = frontmatter[key];
                 let processedValue;
 
-                // Process the value based on its type as per the request.
+                // Process values based on type
                 if (value !== null && typeof value === "object") {
-                    // This handles both arrays and complex objects.
+                    // Arrays and objects
                     processedValue = JSON.stringify(value);
                 } else {
-                    // For null, undefined, etc., convert to a simple string.
+                    // Everything else (strings, numbers, booleans, etc.)
                     processedValue = String(value);
                 }
 
-                // Sanitize the key to be a valid data-attribute name.
+                // Sanitize key to be a valid data-attribute name
                 const attributeKey = key
                     .replace(/[^a-zA-Z0-9\-]/g, "-")
                     .toLowerCase();
@@ -151,7 +148,7 @@ export default class FrontMatterToHtmlAttributesPlugin extends Plugin {
             }
         }
 
-        // Store the keys we just set so we can clean them up efficiently later.
+        // Store keys we added
         if (newKeys.length > 0) {
             this.appliedAttributes.set(leafContentEl, newKeys);
         }
