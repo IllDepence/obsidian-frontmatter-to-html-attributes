@@ -38,9 +38,7 @@ export default class FrontMatterToHtmlAttributesPlugin extends Plugin {
         console.log("Unloading Frontmatter to Attributes plugin");
         // Clean up any attributes we've set in all open leaves.
         this.app.workspace.getLeavesOfType("markdown").forEach((leaf) => {
-            const leafContentEl = leaf.view.containerEl.querySelector(
-                ".workspace-leaf-content"
-            );
+            const leafContentEl = leaf.view.containerEl
             if (leafContentEl) {
                 this.clearAttributes(leafContentEl);
             }
@@ -96,9 +94,7 @@ export default class FrontMatterToHtmlAttributesPlugin extends Plugin {
         if (!file || !leaf) return;
 
         // The target element for our attributes.
-        const leafContentEl = leaf.view.containerEl.querySelector(
-            ".workspace-leaf-content"
-        );
+        const leafContentEl = leaf.view.containerEl
         if (!leafContentEl) return;
 
         // Always clear any attributes we set previously on this specific element.
