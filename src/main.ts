@@ -131,13 +131,7 @@ export default class FrontMatterToHtmlAttributesPlugin extends Plugin {
                 let processedValue;
 
                 // Process the value based on its type as per the request.
-                if (
-                    typeof value === "string" ||
-                    typeof value === "number" ||
-                    typeof value === "boolean"
-                ) {
-                    processedValue = value.toString();
-                } else if (value !== null && typeof value === "object") {
+                if (value !== null && typeof value === "object") {
                     // This handles both arrays and complex objects.
                     processedValue = JSON.stringify(value);
                 } else {
