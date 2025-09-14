@@ -11,7 +11,7 @@ const DEFAULT_SETTINGS: FrontMatterToHtmlAttributesSettings = {};
  * - div.workspace-leaf-content in HTML
  * - by default already has attributes like
  *     - data-type="markdown"
- *     - data-mode="source"
+ *     - data-mode="reading"
  *
  * Attributes are applied as
  * - string/number/boolean: their simple string representation
@@ -24,6 +24,12 @@ const DEFAULT_SETTINGS: FrontMatterToHtmlAttributesSettings = {};
 export default class FrontMatterToHtmlAttributesPlugin extends Plugin {
     settings: FrontMatterToHtmlAttributesSettings;
     appliedAttributes: WeakMap<HTMLElement, string[]> = new WeakMap();
+
+    /** attributes set by Obsidian itself; don't overwrite these  */
+    readonly prohibitedAttributeNames = [
+        "data-type", // file type (e.g. "markdown" or "image")
+        "data-mode", // view mode ("preview" = reading, "source" = editing)
+    ];
 
     async onload() {
         await this.loadSettings();
@@ -93,11 +99,14 @@ export default class FrontMatterToHtmlAttributesPlugin extends Plugin {
      * @param {HTMLElement} element The element to clear attributes from.
      */
     clearAttributes(element: HTMLElement) {
-        const oldKeys = this.appliedAttributes.get(element);
-        if (oldKeys) {
-            oldKeys.forEach((key) => {
-                element.removeAttribute(`data-${key}`);
-            });
+        const addedKeys = this.appliedAttributes.get(element);
+        if (addedKeys) {
+            for (const key of addedKeys) {
+                const htmlAtrrib = `data-${key}`;
+                if (this.prohibitedAttributeNames.contains(htmlAtrrib))
+                    continue;
+                element.removeAttribute(htmlAtrrib);
+            }
             this.appliedAttributes.delete(element);
         }
     }
@@ -140,10 +149,11 @@ export default class FrontMatterToHtmlAttributesPlugin extends Plugin {
                 const attributeKey = key
                     .replace(/[^a-zA-Z0-9\-]/g, "-")
                     .toLowerCase();
-                leafContentEl.setAttribute(
-                    `data-${attributeKey}`,
-                    processedValue
-                );
+                const htmlAtrrib = `data-${attributeKey}`;
+                if (this.prohibitedAttributeNames.contains(htmlAtrrib)) {
+                    continue;
+                }
+                leafContentEl.setAttribute(htmlAtrrib, processedValue);
                 newKeys.push(attributeKey);
             }
         }
