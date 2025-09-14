@@ -4,6 +4,23 @@ interface FrontMatterToHtmlAttributesSettings {}
 
 const DEFAULT_SETTINGS: FrontMatterToHtmlAttributesSettings = {};
 
+/**
+ * Plugin to apply YAML frontmatter key-value pairs as data-* attributes to HTML.
+ *
+ * Attributes are applied to leaf.view.containerEl
+ * - div.workspace-leaf-content in HTML
+ * - by default already has attributes like
+ *     - data-type="markdown"
+ *     - data-mode="source"
+ *
+ * Attributes are applied as
+ * - string/number/boolean: their simple string representation
+ *     - "foo" -> "foo"
+ *     - 27    -> "27"
+ *     - true  -> "true"
+ * - everything else: JSON
+ *     - ["foo", "bar"] -> "['foo', 'bar']"
+ */
 export default class FrontMatterToHtmlAttributesPlugin extends Plugin {
     settings: FrontMatterToHtmlAttributesSettings;
     appliedAttributes: WeakMap<HTMLElement, string[]> = new WeakMap();
@@ -38,7 +55,7 @@ export default class FrontMatterToHtmlAttributesPlugin extends Plugin {
         console.log("Unloading Frontmatter to Attributes plugin");
         // Clean up any attributes we've set in all open leaves.
         this.app.workspace.getLeavesOfType("markdown").forEach((leaf) => {
-            const leafContentEl = leaf.view.containerEl
+            const leafContentEl = leaf.view.containerEl;
             if (leafContentEl) {
                 this.clearAttributes(leafContentEl);
             }
@@ -94,7 +111,7 @@ export default class FrontMatterToHtmlAttributesPlugin extends Plugin {
         if (!file || !leaf) return;
 
         // The target element for our attributes.
-        const leafContentEl = leaf.view.containerEl
+        const leafContentEl = leaf.view.containerEl;
         if (!leafContentEl) return;
 
         // Always clear any attributes we set previously on this specific element.
