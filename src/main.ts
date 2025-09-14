@@ -103,8 +103,9 @@ export default class FrontMatterToHtmlAttributesPlugin extends Plugin {
         if (addedKeys) {
             for (const key of addedKeys) {
                 const htmlAtrrib = `data-${key}`;
-                if (this.prohibitedAttributeNames.contains(htmlAtrrib))
+                if (this.prohibitedAttributeNames.contains(htmlAtrrib)) {
                     continue;
+                }
                 element.removeAttribute(htmlAtrrib);
             }
             this.appliedAttributes.delete(element);
