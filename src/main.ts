@@ -124,14 +124,10 @@ export default class FrontMatterToHtmlAttributesPlugin extends Plugin {
             return; // Nothing to do if there's no frontmatter.
         }
 
-        // The 'position' key is often added by Obsidian internally and isn't useful
-        // for styling, so we exclude it.
-        const { position, ...restFrontmatter } = frontmatter;
         const newKeys = [];
-
-        for (const key in restFrontmatter) {
-            if (Object.prototype.hasOwnProperty.call(restFrontmatter, key)) {
-                const value = restFrontmatter[key];
+        for (const key in frontmatter) {
+            if (Object.prototype.hasOwnProperty.call(frontmatter, key)) {
+                const value = frontmatter[key];
                 let processedValue;
 
                 // Process the value based on its type as per the request.
