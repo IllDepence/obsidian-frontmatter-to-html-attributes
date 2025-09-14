@@ -19,7 +19,7 @@ const DEFAULT_SETTINGS: FrontMatterToHtmlAttributesSettings = {};
  *     - 27    -> "27"
  *     - true  -> "true"
  * - everything else: JSON
- *     - ["foo", "bar"] -> "['foo', 'bar']"
+ *     - ["foo", "bar"] -> "[&quot;foo&quot;, &quot;bar&quot;]"
  */
 export default class FrontMatterToHtmlAttributesPlugin extends Plugin {
     settings: FrontMatterToHtmlAttributesSettings;
