@@ -133,30 +133,31 @@ export default class FrontMatterToHtmlAttributesPlugin extends Plugin {
 
         const newKeys = [];
         for (const key in frontmatter) {
-            if (Object.prototype.hasOwnProperty.call(frontmatter, key)) {
-                const value = frontmatter[key];
-                let processedValue;
-
-                // Process values based on type
-                if (value !== null && typeof value === "object") {
-                    // Arrays and objects
-                    processedValue = JSON.stringify(value);
-                } else {
-                    // Everything else (strings, numbers, booleans, etc.)
-                    processedValue = String(value);
-                }
-
-                // Sanitize key to be a valid data-attribute name
-                const attributeKey = key
-                    .replace(/[^a-zA-Z0-9\-]/g, "-")
-                    .toLowerCase();
-                const htmlAtrrib = `data-${attributeKey}`;
-                if (this.prohibitedAttributeNames.contains(htmlAtrrib)) {
-                    continue;
-                }
-                leafContentEl.setAttribute(htmlAtrrib, processedValue);
-                newKeys.push(attributeKey);
+            if (!Object.prototype.hasOwnProperty.call(frontmatter, key)) {
+                continue; // Skip inherited object properties
             }
+            const value = frontmatter[key];
+            let processedValue;
+
+            // Process values based on type
+            if (value !== null && typeof value === "object") {
+                // Arrays and objects
+                processedValue = JSON.stringify(value);
+            } else {
+                // Everything else (strings, numbers, booleans, etc.)
+                processedValue = String(value);
+            }
+
+            // Sanitize key to be a valid data-attribute name
+            const attributeKey = key
+                .replace(/[^a-zA-Z0-9\-]/g, "-")
+                .toLowerCase();
+            const htmlAtrrib = `data-${attributeKey}`;
+            if (this.prohibitedAttributeNames.contains(htmlAtrrib)) {
+                continue;
+            }
+            leafContentEl.setAttribute(htmlAtrrib, processedValue);
+            newKeys.push(attributeKey);
         }
 
         // Remember keys added
