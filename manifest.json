@@ -1,11 +1,10 @@
 {
-	"id": "sample-plugin",
-	"name": "Sample Plugin",
-	"version": "1.0.0",
-	"minAppVersion": "0.15.0",
-	"description": "Demonstrates some of the capabilities of the Obsidian API.",
-	"author": "Obsidian",
-	"authorUrl": "https://obsidian.md",
-	"fundingUrl": "https://obsidian.md/pricing",
-	"isDesktopOnly": false
+    "id": "frontmatter-to-html-attributes",
+    "name": "Frontmatter to HTML Attributes",
+    "version": "0.0.1",
+    "minAppVersion": "1.19.12",
+    "description": "Makes YAML frontmatter available as data-* attributes for CSS styling.",
+    "author": "Tarek Saier",
+    "authorUrl": "https://github.com/IllDepence",
+    "isDesktopOnly": false
 }
