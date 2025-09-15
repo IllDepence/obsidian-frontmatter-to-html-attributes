@@ -1,6 +1,6 @@
 # Frontmatter to HTML Attributes
 
-An Obsidian plugin that makes a note’s YAML frontmatter available in HTML as data-* attributes for CSS styling.
+An Obsidian plugin that makes a note’s YAML frontmatter available in HTML as data-* attributes for metadata based CSS styling.
 
 ![](docs/demo.gif)
 
