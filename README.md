@@ -14,7 +14,7 @@ With the plugin installed, you can use CSS snippets like below
       content: " \1F3DD\FE0F"; /** 🏝️ */
     }
     ```
-2. Underline headings notes with the "sections" attribute checked.
+2. Underline headings in notes with the "sections" attribute checked.
     ```css
     div.workspace-leaf-content[data-sections="true"] .HyperMD-header-1, /** editing mode */
     div.workspace-leaf-content[data-sections="true"] h1 { /** reading mode */
