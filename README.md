@@ -10,7 +10,7 @@ With the plugin installed, you can use CSS snippets like below
 
 1. Display an island icon with the title of every note tagged "travel".
     ```css
-    div.workspace-leaf-content[data-tags*="travel"] div.inline-title:after {
+    div.workspace-leaf-content[data-tags*='"travel"'] div.inline-title:after {
       content: " \1F3DD\FE0F"; /** 🏝️ */
     }
     ```
@@ -34,10 +34,10 @@ div.workspace-leaf-content[data-XXX="YYY"] /** additional selectors */ {
 }
 ```
 
-To match a tag, use `*=` instead of `=` as shown below.
+To match a tag, use `*=` instead of `=` and add quotes, as shown below.
 
 ```css
-div.workspace-leaf-content[data-tags*="YYY"] /** additional selectors */ {
+div.workspace-leaf-content[data-tags*='"YYY"'] /** additional selectors */ {
   /** styling */
 }
 ```
@@ -64,7 +64,7 @@ will be rendered in a container with data attributes as follows.
 ```html
 <div
     class="workspace-leaf-content"
-    data-tags="[&quot;travel&quot;,&quot;asia&quot;]"
+    data-tags='["travel","asia"]'
     data-start="2025-10-27"
     data-end="null"
     data-insurance="true"
